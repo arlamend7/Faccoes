@@ -9,8 +9,8 @@ using XPTO.Infra.Data.Context;
 namespace XPTO.Infra.Migrations
 {
     [DbContext(typeof(XPTOContext))]
-    [Migration("20210830202720_Inital")]
-    partial class Inital
+    [Migration("20210830223545_Initials")]
+    partial class Initials
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

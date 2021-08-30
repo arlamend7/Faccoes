@@ -2,7 +2,7 @@
 
 namespace XPTO.Infra.Migrations
 {
-    public partial class Inital : Migration
+    public partial class Initials : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
