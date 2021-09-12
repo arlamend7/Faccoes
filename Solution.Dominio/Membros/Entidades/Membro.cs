@@ -22,7 +22,7 @@ namespace Solution.Dominio.Membros.Entidades
         public virtual DateTime DataCadastro { get; protected set; }
         public virtual string Referencia { get; protected set; }
         public virtual string Matricula { get; protected set; }
-        public virtual Stream Foto { get; protected set; }
+        public virtual byte[] Foto { get; protected set; }
         public virtual string CPF { get; protected set; }
         public virtual string NomeMae { get; protected set; }
         public virtual bool Obito { get; protected set; } // validar se é necessario

@@ -15,9 +15,12 @@ namespace Solution.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IHostEnvironment env;
+
+        public Startup(IConfiguration configuration, IHostEnvironment env)
         {
             Configuration = configuration;
+            this.env = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -45,7 +48,7 @@ namespace Solution.API
                     }
                 });
             });
-            NativeInjectorBootStrapper.InjectServices(services, Configuration);
+            NativeInjectorBootStrapper.InjectServices(services, Configuration, env);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

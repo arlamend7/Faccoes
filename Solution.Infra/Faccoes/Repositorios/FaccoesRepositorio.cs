@@ -15,9 +15,5 @@ namespace Solution.Infra.Faccoes.Repositorios
         {
         }
 
-        public override IQueryable<Faccao> Query()
-        {
-            return new List<Faccao>().AsQueryable();
-        }
     }
 }

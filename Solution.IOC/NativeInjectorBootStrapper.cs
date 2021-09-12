@@ -1,12 +1,14 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 
 using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 using NHibernate;
+using NHibernate.Tool.hbm2ddl;
 
 using Solution.Aplicacao.Faccoes.Profiles;
 using Solution.Aplicacao.Faccoes.Servicos;
@@ -19,24 +21,35 @@ namespace Solution.IOC
 {
     public class NativeInjectorBootStrapper
     {
-        private static ISessionFactory CreateSession<T>(string connectionString)
+        private static ISessionFactory CreateSession<T>(IPersistenceConfigurer configurer)
         {
             return Fluently.Configure()
-                .Database(FluentNHibernate.Cfg
-                                       .Db
-                                       .OracleManagedDataClientConfiguration
-                                       .Oracle10
-                                       .ConnectionString(connectionString)
-                                       .FormatSql()
-                                       .ShowSql()
-                )
+                .Database(configurer)
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<T>())
+                .ExposeConfiguration(cfg => new SchemaUpdate(cfg).Execute(false, true))
                 .BuildConfiguration()
-                .BuildSessionFactory(); ;
+                .BuildSessionFactory();
         }
-        public static void InjectServices(IServiceCollection services, IConfiguration configuration)
+        private static IPersistenceConfigurer PersistenceConfiguration(IConfiguration configuration, IHostEnvironment env)
         {
-            services.AddSingleton(factory => CreateSession<FaccoesMap>(configuration.GetConnectionString("connection")));
+            if (env.IsDevelopment())
+            {
+                return SQLiteConfiguration.Standard
+                                          .UsingFile("../bancodedados.sqlite")
+                                          .FormatSql()
+                                          .ShowSql();
+            }
+            if(env.IsEnvironment("Hml"))
+            {
+                return MySQLConfiguration.Standard
+                                          .ConnectionString(configuration.GetConnectionString("Connection"));
+            }
+            return null;
+        }
+        public static void InjectServices(IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
+        {
+            IPersistenceConfigurer persistenceConfiguration = PersistenceConfiguration(configuration, env);
+            services.AddSingleton(factory => CreateSession<FaccoesMap>(persistenceConfiguration));
             services.AddScoped<ISession>(factory =>
             {
                 return factory.GetService<ISessionFactory>().OpenSession();
