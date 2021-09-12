@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Solution.Dominio.Enderecos.Entidades;
 using Solution.Dominio.Localizacoes.Entidades;
 
 namespace Solution.Dominio.Quebradas.Entidades
