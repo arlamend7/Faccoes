@@ -18,8 +18,6 @@ namespace Solution.Infra.Investigacoes.Mapeamentos
             Map(x => x.Descricao).Column("DESCRICAO");
             Map(x => x.DataInvestigacao).Column("DATAINVESTIGACAO");
             References(x => x.Membro).Column("IDMEMBRO");
-
-            ReadOnly();
         }
     }
 }
