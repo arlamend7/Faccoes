@@ -56,17 +56,19 @@ namespace Solution.Infra.Utils
             }
         }
 
-        public void Inserir(T entidade)
+        public T Inserir(T entidade)
         {
             Session.Save(entidade);
+            return entidade;
         }
 
-        public void Inserir(IEnumerable<T> entidades)
+        public IEnumerable<T> Inserir(IEnumerable<T> entidades)
         {
             foreach (T entidade in entidades)
             {
                 Session.Save(entidade);
             }
+            return entidades;
         }
     }
 }

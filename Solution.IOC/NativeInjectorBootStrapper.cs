@@ -13,6 +13,7 @@ using NHibernate.Tool.hbm2ddl;
 using Solution.Aplicacao.Faccoes.Profiles;
 using Solution.Aplicacao.Faccoes.Servicos;
 using Solution.Dominio.Faccoes.Services;
+using Solution.Dominio.Utils;
 using Solution.Infra.Faccoes.Mapeamentos;
 using Solution.Infra.Faccoes.Repositorios;
 using Solution.Infra.Utils;
@@ -35,7 +36,7 @@ namespace Solution.IOC
             if (env.IsDevelopment())
             {
                 return SQLiteConfiguration.Standard
-                                          .UsingFile("../bancodedados.sqlite")
+                                          .UsingFile(configuration.GetSection("FilePath").Value)
                                           .FormatSql()
                                           .ShowSql();
             }
